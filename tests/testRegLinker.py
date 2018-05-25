@@ -10,17 +10,17 @@ class TestRegLinker(unittest.TestCase):
     def __make_G():
         G = nx.DiGraph()
 
-        G.add_edge(1, 2, l="a", w=1)
-        G.add_edge(1, 3, l="b", w=2)
-        G.add_edge(1, 4, l="c", w=3)
+        G.add_edge(1, 2, l=["a"], w=1)
+        G.add_edge(1, 3, l=["b"], w=2)
+        G.add_edge(1, 4, l=["c"], w=3)
 
-        G.add_edge(2, 5, l="a", w=1)
-        G.add_edge(3, 6, l="a", w=2)
-        G.add_edge(4, 7, l="b", w=3)
+        G.add_edge(2, 5, l=["a"], w=1)
+        G.add_edge(3, 6, l=["a"], w=2)
+        G.add_edge(4, 7, l=["b"], w=3)
 
-        G.add_edge(5, 8, l="a", w=1)
-        G.add_edge(6, 8, l="b", w=2)
-        G.add_edge(7, 8, l="b", w=3)
+        G.add_edge(5, 8, l=["a"], w=1)
+        G.add_edge(6, 8, l=["b"], w=2)
+        G.add_edge(7, 8, l=["b"], w=3)
     
         return G
 

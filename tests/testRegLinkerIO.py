@@ -11,7 +11,8 @@ class TestRegLinkerIO(unittest.TestCase):
         infile = io.StringIO(
             "a\tb\tlabel1\t5\n"
             "b\tc\tlabel2\t6\n" 
-            "c\td\tlabel1\t2"
+            "c\td\tlabel1\t2\n"
+            "c\td\tlabel2\t2"
             ) 
 
         G = rlio.read_graph(infile, label_col=2, weight_col=3)
@@ -20,9 +21,10 @@ class TestRegLinkerIO(unittest.TestCase):
         self.assertTrue(G.has_edge("b", "c"))
         self.assertTrue(G.has_edge("c", "d"))
 
-        self.assertTrue(G["a"]["b"]["l"] == "label1")
-        self.assertTrue(G["b"]["c"]["l"] == "label2")
-        self.assertTrue(G["c"]["d"]["l"] == "label1")
+        self.assertTrue(G["a"]["b"]["l"] == ["label1"])
+        self.assertTrue(G["b"]["c"]["l"] == ["label2"])
+        self.assertTrue("label1" in G["c"]["d"]["l"])
+        self.assertTrue("label2" in G["c"]["d"]["l"])
 
         self.assertTrue(G["a"]["b"]["w"] == float(5))
         self.assertTrue(G["b"]["c"]["w"] == float(6))
