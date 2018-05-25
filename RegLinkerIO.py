@@ -140,7 +140,7 @@ def write_ranked_paths_file(handle, ranked_results):
         path_string = "|".join([str(compound_node) for compound_node in path])
         g_path_string = "|".join([str(node) for node in g_path])
         h_path_string = "|".join([str(node) for node in h_path])
-        labeled_string = ", ".join([str(edge for edge in labeled_path])
+        labeled_string = ", ".join([str(edge) for edge in labeled_path])
 
         handle.write(str(rank) + "\t")
         handle.write(str(weight) + "\t")
