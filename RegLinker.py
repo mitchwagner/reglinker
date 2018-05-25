@@ -127,7 +127,8 @@ def QuickLinker(G, ss=SUPER_SOURCE, st=SUPER_TARGET, weight="w"):
 
             paths.append((edge, path, path_weight))
 
-    return sorted(paths, key=lambda x: x[2])
+    # Sort by path cost, then by tail/head node names
+    return sorted(paths, key=lambda x: (x[2], x[0][0], x[0][1]))
 
 
 def __project_path(path):
