@@ -23,9 +23,15 @@ def __remove_product_edges_with_nonmatching_labels(P, label="l"):
     # combined to form a given product edge?
     for edge in edges:
         labels = edge[2][label]
-
+        
+        # Each element in the labels iterable corresponds to the set of labels
+        # for one of the edges that combined to make the product edge. Prime
+        # the pump with the first one.
         U = set(labels[0])
-
+    
+        # Now check the rest of sets to see if any labels are in common to
+        # all sets. Using a for loop, but in reality, there should only be
+        # one other set
         for x in labels[1:]:
             U = U.intersection(set(x))
 
