@@ -4,7 +4,8 @@ import RegLinker as rl
 import networkx as nx
 
 class TestRegLinker(unittest.TestCase):
-    
+
+
     @staticmethod
     def __make_G():
         G = nx.DiGraph()
