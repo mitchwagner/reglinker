@@ -102,3 +102,49 @@ def read_node_types(handle, type_col=1,
             targets.append(node)
 
     return sources, targets
+
+
+def rank_results(results):
+    '''
+    Augment results with a rank that corresponds to the weight of the
+    path found for each edge
+    '''
+    weights = set([f for _, _, _, _, _, f in results])
+    weights = sorted(weights)
+
+    rank = {}
+    for i, weight in weights:
+        rank[weight] = i
+
+    return ((a, b, c, d, e, f, rank[f]) for a, b, c, d, e, f in results)
+
+
+def write_ranked_edge_file(handle, ranked_results):
+    for i, (edge, _, _, _, _, weight, rank) in enumerate(ranked_results):
+
+        if i != 0:
+            handle.write("\n")
+
+        handle.write(edge[0] + "\t")
+        handle.write(edge[1] + "\t")
+        handle.write(str(rank) + "\t")
+        handle.write(str(weight))
+
+
+def write_ranked_paths_file(handle, ranked_results):
+    for i, (_, path, g_path, h_path, labeled_path, weight, rank) in results:
+
+        if i != 0:
+            handle.write("\n")
+
+        path_string = "|".join([str(compound_node) for compound_node in path])
+        g_path_string = "|".join([str(node) for node in g_path])
+        h_path_string = "|".join([str(node) for node in h_path])
+        labeled_string = ", ".join([str(edge for edge in labeled_path])
+
+        handle.write(str(rank) + "\t")
+        handle.write(str(weight) + "\t")
+        handle.write(path_string + "\t")
+        handle.write(g_path_string + "\t")
+        handle.write(h_path_string + "\t")
+        handle.write(labeled_string)
