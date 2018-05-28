@@ -109,11 +109,12 @@ def rank_results(results):
     Augment results with a rank that corresponds to the weight of the
     path found for each edge
     '''
-    weights = set([f for _, _, _, _, _, f in results])
+    weights = (w for _, _, _, _, _, w in results)
+    weights = list(set(weights))
     weights = sorted(weights)
 
     rank = {}
-    for i, weight in weights:
+    for i, weight in enumerate(weights):
         rank[weight] = i
 
     return ((a, b, c, d, e, f, rank[f]) for a, b, c, d, e, f in results)
