@@ -173,8 +173,6 @@ def __rank_results(results):
     weights = list(set(weights))
     weights = sorted(weights)
 
-    print(weights)
-
     rank = {}
     for i, weight in enumerate(weights):
         rank[weight] = i
