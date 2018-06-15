@@ -163,6 +163,26 @@ def __construct_product_graph(G, H, S_G, T_G, S_H, T_H, label="l", weight="w"):
     return P
 
 
+def __rank_results(results):
+    '''
+    Augment results with a rank that corresponds to the weight of the
+    path found for each edge
+    '''
+
+    weights = (w for _, _, w in results)
+    weights = list(set(weights))
+    weights = sorted(weights)
+
+    print(weights)
+
+    rank = {}
+    for i, weight in enumerate(weights):
+        rank[weight] = i
+
+    return sorted(((a, b, c, rank[c]) for a, b, c in results), 
+        key=lambda x: (x[2], x[0], x[1]))
+
+
 def RegLinker(G, H, S_G, T_G, S_H, T_H, label="l", weight="w"):
     '''
     :param G: Directed, weighted, edge-labeled graph
@@ -180,10 +200,11 @@ def RegLinker(G, H, S_G, T_G, S_H, T_H, label="l", weight="w"):
     
     P = __construct_product_graph(G, H, S_G, T_G, S_H, T_H, label, weight)
 
-    for edge, path, weight in \
-            QuickLinker(P, SUPER_SOURCE, SUPER_TARGET, weight):
+    results = QuickLinker(P, SUPER_SOURCE, SUPER_TARGET, weight)
+
+    for edge, path, weight, rank in __rank_results(results):
 
         G_path, H_path = __project_path(path)
         labeled_path = __path_to_labeled_edges(G, G_path, label)
 
-        yield (edge, path, G_path, H_path, labeled_path, weight)
+        yield (edge, path, G_path, H_path, labeled_path, weight, rank)

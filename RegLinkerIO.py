@@ -104,36 +104,33 @@ def read_node_types(handle, type_col=1,
     return sources, targets
 
 
-def rank_results(results):
-    '''
-    Augment results with a rank that corresponds to the weight of the
-    path found for each edge
-    '''
-    weights = (w for _, _, _, _, _, w in results)
-    weights = list(set(weights))
-    weights = sorted(weights)
-
-    rank = {}
-    for i, weight in enumerate(weights):
-        rank[weight] = i
-
-    return ((a, b, c, d, e, f, rank[f]) for a, b, c, d, e, f in results)
-
-
-def write_ranked_edge_file(handle, ranked_results):
-    for i, (edge, _, _, _, _, weight, rank) in enumerate(ranked_results):
+def write_edge_file(handle, results):
+    for i, (edge, _, _, _, _, weight, rank) in enumerate(results):
 
         if i != 0:
             handle.write("\n")
 
-        handle.write(edge[0] + "\t")
-        handle.write(edge[1] + "\t")
+        handle.write(str(edge[0]) + "\t")
+        handle.write(str(edge[1]) + "\t")
         handle.write(str(rank) + "\t")
         handle.write(str(weight))
 
 
-def write_ranked_paths_file(handle, ranked_results):
-    for i, (_, path, g_path, h_path, labeled_path, weight, rank) in results:
+def write_projected_edge_file(handle, results):
+    for i, (edge, _, _, _, _, weight, rank) in enumerate(results):
+
+        if i != 0:
+            handle.write("\n")
+
+        handle.write(str(edge[0][0]) + "\t")
+        handle.write(str(edge[1][0]) + "\t")
+        handle.write(str(rank) + "\t")
+        handle.write(str(weight))
+
+
+def write_paths_file(handle, results):
+    for i, (_, path, g_path, h_path, labeled_path, weight, rank) \
+            in enumerate(results):
 
         if i != 0:
             handle.write("\n")
