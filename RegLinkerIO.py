@@ -12,9 +12,8 @@ def add_edge(G, toks, label_col=None, weight_col=None, label="l", weight="w"):
     '''
     Accessory method for adding an edge to G. 
 
-    Note: if the edge has already been added with a different label, both
-        labels will be tracked, but the weight of the edge will be overwritten
-        by the edge that is added last.
+    Note: if the edge has already been added, the weight and the label
+    of the edge will be replaced.
     '''
     tail = toks[0]
     head = toks[1]
@@ -22,13 +21,7 @@ def add_edge(G, toks, label_col=None, weight_col=None, label="l", weight="w"):
     kwargs = {}
 
     if label_col != None:
-        # If we've already seen this edge with a different label,
-        # make sure to keep track of both
-        if G.has_edge(tail, head):
-            G[tail][head][label].append(toks[label_col])
-
-        else:
-            kwargs[label] = [toks[label_col]]
+        kwargs[label] = toks[label_col]
         
     if weight_col != None:
         kwargs[weight] = float(toks[weight_col])

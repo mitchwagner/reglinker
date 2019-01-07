@@ -2,8 +2,6 @@
 Implements the RegLinker algorithm for finding the shortest
 regular-language-constrained path through every edge in a directed, weighted,
 edge-labeled graph.
-
-Note: multiple labels on an edge should be specified as a tuple
 '''
 
 import networkx as nx
@@ -19,23 +17,12 @@ def __remove_product_edges_with_nonmatching_labels(P, label="l"):
 
     edges = list(P.edges(data=True))
 
-    # Does any label exist that is common to the edges that 
-    # combined to form a given product edge?
+    # Do the edges that combined to form the product edge share the
+    # same label?
     for edge in edges:
         labels = edge[2][label]
         
-        # Each element in the labels iterable corresponds to the set of labels
-        # for one of the edges that combined to make the product edge. Prime
-        # the pump with the first one.
-        U = set(labels[0])
-    
-        # Now check the rest of sets to see if any labels are in common to
-        # all sets. Using a for loop, but in reality, there should only be
-        # one other set
-        for x in labels[1:]:
-            U = U.intersection(set(x))
-
-        if len(U) == 0:
+        if labels[0] != labels[1]:
             P.remove_edge(edge[0], edge[1])
 
 

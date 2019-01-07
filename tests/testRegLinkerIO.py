@@ -21,10 +21,10 @@ class TestRegLinkerIO(unittest.TestCase):
         self.assertTrue(G.has_edge("b", "c"))
         self.assertTrue(G.has_edge("c", "d"))
 
-        self.assertTrue(G["a"]["b"]["l"] == ["label1"])
-        self.assertTrue(G["b"]["c"]["l"] == ["label2"])
-        self.assertTrue("label1" in G["c"]["d"]["l"])
-        self.assertTrue("label2" in G["c"]["d"]["l"])
+        self.assertTrue(G["a"]["b"]["l"] == "label1")
+        self.assertTrue(G["b"]["c"]["l"] == "label2")
+        self.assertTrue("label1" != G["c"]["d"]["l"])
+        self.assertTrue("label2" == G["c"]["d"]["l"])
 
         self.assertTrue(G["a"]["b"]["w"] == float(5))
         self.assertTrue(G["b"]["c"]["w"] == float(6))
