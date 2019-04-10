@@ -1,8 +1,15 @@
 # RegLinker
-Connect the dots in protein interaction networks ... using regular
+Connect the dots in protein interaction networks... using regular
 expressions!
 
 ## About
+
+RegLinker is an algorithm for the automated curation of signaling
+pathways. Given a signaling pathway and a background interactome,
+RegLinker will automatically rank the interactions in the background
+interactome as candidates for inclusion into the signaling pathway.
+
+### The Interactome
 
 Cellular biology is predicated upon many complex interactions that
 take place among biomolecules, including genes and proteins. These
@@ -57,7 +64,7 @@ vertices) are considered for addition to the signaling pathway.
 ### Regular Languages
 
 Informally, a regular language is a set of strings with the property
-thatan algorithm that uses a fixed amount of memory can examine the
+that an algorithm that uses a fixed amount of memory can examine the
 lettersin the string sequentially to determine if it is a member of
 the language. For example, for the alphabet {*p*,*x*}, regular languages
 are expressive enough to represent strings with an even number of
