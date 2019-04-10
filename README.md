@@ -84,7 +84,8 @@ As input, RegLinker requires:
 - sets *S<sub>G</sub>* and *T<sub>G</sub>* of vertices corresponding to
   the receptor and TF proteins in *P*;
 
-- a directed, edge-labeled graph *H* corresponding to the DFA. 
+- a directed, edge-labeled graph *H* corresponding to the DFA
+  representation of a specified regular language.
 
 - and sets *S<sub>H</sub>* and *T<sub>H</sub>* of vertices
   corresponding to the start and final states of the DFA.
