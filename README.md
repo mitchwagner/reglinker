@@ -89,12 +89,13 @@ As input, RegLinker requires:
 - and sets *S<sub>H</sub>* and *T<sub>H</sub>* of vertices
   corresponding to the start and final states of the DFA.
 
-It then computes, for each edge in *G*, a shortest *S*-*T* path
-in *G*, should one exist. To produce a ranked list of candidate
-interactions, we order the edges in *G* in increasing order of weight.
-Then, for each edge *e* with a rank *r* (edges may be tied in weight),
-we assign a rank of *r* to every edge in the shortest *S*-*T* path via
-*e*, provided the edge has not already received a rank.
+It then computes, for each edge in *G*, a shortest
+regular-language-constrained, *S*-*T* path in *G*, should one exist.
+To produce a ranked list of candidate interactions, we order the edges
+in *G* in increasing order of weight.  Then, for each edge *e* with a
+rank *r* (edges may be tied in weight), we assign a rank of *r* to
+every edge in the shortest *S*-*T* path via *e*, provided the edge has
+not already received a rank.
 
 ## Dependencies
 
