@@ -1,95 +1,116 @@
 # RegLinker
-Connect the dots in protein interaction networks ... using regular expressions!
+Connect the dots in protein interaction networks ... using regular
+expressions!
 
 ## About
-The inputs to RegLinker are a set of sources, a set of targets, an
-edge-labeled protein interaction network, and the DFA coresponding to
-a regular language. RegLinker computes, for each edge in the
-interaction network, a shortest path from the set of sources to the
-set of targets through that edge, such that each path is *regular
-language constrained*: that is, the concatentation of the labels of
-the edges along the path forms a word in the specified regular
-language. This is achieved through finding paths in an
-appropriately-defined product of the interaction network and the DFA.  
 
-This implementation of RegLinker is written in Python 3, and is
-designed to be used in conjunction with the NetworkX library.
+Cellular biology is predicated upon many complex interactions that
+take place among biomolecules, including genes and proteins. These
+supply the machinery by which cells live, grow, and reproduce. Taken
+together, the whole of these interactions is termed the *interactome*. 
+
+### Signaling Pathways
+
+Subsets of the interactome allow cells to implement complex signaling
+mechanisms, by which they can sense their environment and respond
+appropriately to the perceived conditions. These *signaling pathways*,
+networks of molecular interactions that together effect some
+biological function, are widely studied. In such pathways,
+membrane-bound proteins called *receptors* act as initial sensors,
+binding with molecules originating outside the cell. These signals are
+then propagated inside the cell via further interactions involving
+intermediate proteins. Ultimately, this process will reach
+*transcription factors* (TF), upon which point, DNA transcription, and
+thus, cell behavior, will be affected.
+
+Numerous databases exist to catalogue the interactions that comprise
+known signaling pathways; however, manual curation of signaling
+pathways is time consuming and painstaking. A natural question arises:
+given the interactome and the interactions annotated to a given
+curated pathway, can we computationally identify candidate proteins
+from the interactome that might be considered for inclusion in the
+pathway?
+
+### Automated Signaling Pathway Curation
+
+RegLinker offers one approach to automated pathway curation, treating
+the interactome itself as a directed graph, *G*, wherein a vertex represents
+a protein, and an edge is present between two vertices if their
+corresponding proteins interact. For a given signaling pathway, we can
+distinguish the edges of *G* with one of two labels: *known*, for
+those edges whose corresponding interactions appear in the signaling
+pathway, and *unknown*, for those edges whose corresponding
+interactions have not been so annotated.
+
+Underlying RegLinker are two key principles. The first of these is
+that proteins that lie along the shortest paths from receptors to
+transcription factors in *G* are most likely to be involved in a
+signaling pathway. The second is that, considering our earlier
+labeling, we can partition these paths into subpaths of the following
+structure: each subpath contains only interactions with the label
+*known* or the label *unknown*. The challenge is that we do not know
+*a priori* how many edges each of these subpaths contains. Our key
+insight is that a regular language acts as a constraint that allows us
+to control the number of and structure by which new edges (and
+vertices) are considered for addition to the signaling pathway.
+
+### Regular Languages
+
+Informally, a regular language is a set of strings with the property
+thatan algorithm that uses a fixed amount of memory can examine the
+lettersin the string sequentially to determine if it is a member of
+the language. For example, for the alphabet {*p*,*x*}, regular languages
+are expressive enough to represent strings with an even number of
+occurrences of *p* or strings where *p* and *x* strictly alternate an
+arbitrary number of times.
+
+A regular language can be equivalently represented by a *regular
+expression* or a deterministic finite automaton (DFA).
+
+For a given regular language *L*, we say that a path in *G* is
+*regular-language-constrained* if the concatenation of the labels of
+the edges along the path forms a string that is a member of *L*.
+
+### RegLinker
+
+As input, RegLinker requires:
+
+- a directed, weighted, edge-labeled graph, *G*, corresponding to the
+  interactome; 
+
+- a subnetwork *P* of *G* representing the vertices and edges of a
+  curated signaling pathway;
+
+- sets *S<sub>G</sub>* and *T<sub>G</sub>* of vertices corresponding to
+  the receptor and TF proteins in *P*;
+
+- a directed, edge-labeled graph *H* corresponding to the DFA. 
+
+- and sets *S<sub>H</sub>* and *T<sub>H</sub>* of vertices
+  corresponding to the start and final states of the DFA.
+
+It then computes, for each edge in *G*, a shortest *S*-*T* path
+in *G*, should one exist. To produce a ranked list of candidate
+interactions, we order the edges in *G* in increasing order of weight.
+Then, for each edge *e* with a rank *r* (edges may be tied in weight),
+we assign a rank of *r* to every edge in the shortest *S*-*T* path via
+*e*, provided the edge has not already received a rank.
 
 ## Dependencies
 
-This implementation of RegLinker requires NetworkX 2.1.
+This implementation of RegLinker is written in Python 3, and is
+designed to be used in conjunction with the NetworkX library, v.2.1.
 
-## How to Run
+## Usage
 
-Definitions:
-- *G*: NetworkX DiGraph representing an interaction network
-- *S<sub>G</sub>*: Iterable of sources for *G*
-- *T<sub>G</sub>*: Iterable of targets for *G*
+Please see [the documentation for examples of usage](./docs/usage.md).
 
-- *H*: DFA, represented as a NetworkX DiGraph
-- *S<sub>H</sub>*: Iterable of start states for *H* 
-- *T<sub>H</sub>*: Iterable of final states *H*
+## Reference, Citation, and Collaboration
 
-Each edge in *G* and each edge in *H* must be labeled using a common
-dictionary attribute. Each edge in *G* must also have a common
-attribute to denote an edge weight.
+RegLinker is the subject of a to-be-published manuscript as a part of
+conference proceedings. In the interim, we ask that if you use
+RegLinker in your work, that you please reach out for information on
+best to cite RegLinker.
 
-With these inputs in hand, RegLinker can be imported and run as
-follows:
-
-```python
-import RegLinker as rl
-
-results = rl.RegLinker(G, H, S_G, T_G, S_H, T_H, label="l", weight="w")
-
-```
-
-This will create a generator that yields tuples of the form:
-
-```python
-(edge, path, G_path, H_path, labeled_path, cost, rank)
-```
-
-Here:
-- *edge* is the edge considered
-- *path* is the path found in the product graph
-- *G\_path\_* and *H\_path\_* are the paths formed by
-  projecting the product *path* onto *G* and *H*
-- *labeled\_path* is *path*, annotated with edge labels
-- *cost* is the sum of the weights of the path
-- *rank* is an ordering of the paths, from lowest to highest cost. A
-  rank of zero indicates the lowest-cost path.
-
-These tuples are produced in ascending order of rank.
-
-## IO
-
-The file RegLinkerIO.py contains some convenient utility functions for
-reading and writing results to disk.
-
-```python
-import RegLinker as rl
-import RegLinkerIO as rlio
-
-
-# Open file handles
-net_file = open('examples/network.tsv', 'r') 
-net_nodes_file = open('examples/net-nodes.tsv', 'r')
-
-dfa_file = open('examples/dfa.tsv', 'r') 
-dfa_nodes_file = open('examples/dfa-nodes.tsv', 'r')
-
-
-# Read networks in. Here, label_col and weight_col refer to the
-# 0-indexed column of the corresponding TSV file.
-
-G = rlio.read_graph(net_file, label_col=2, weight_col=3)
-S_G, T_G = rlio.read_node_types(net_nodes_file) 
-
-H = rlio.read_graph(dfa_file, label_col=2)
-S_H, T_H = rlio.read_node_types(dfa_nodes_file)
-
-
-# Obtain RegLinker results
-results = rl.RegLinker(G, H, S_G, T_G, S_H, T_H, label="l", weight="w")
-```
+We encourage experimentation with RegLinker. Please don't hesitate to
+contact us if you would like to collaborate!
