@@ -2,7 +2,7 @@
 Connect the dots in protein interaction networks ... using regular expressions!
 
 ## About
-The inputs to RegLinekr are a list of sources, a list of targets, an
+The inputs to RegLinker are a set of sources, a set of targets, an
 edge-labeled protein interaction network, and the DFA coresponding to
 a regular language. RegLinker computes, for each edge in the
 interaction network, a shortest path from the set of sources to the
