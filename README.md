@@ -103,7 +103,7 @@ designed to be used in conjunction with the NetworkX library, v.2.1.
 
 ## Usage
 
-Please see [the documentation for examples of usage](./docs/usage.md).
+Please see [the documentation](./docs/usage.md) for examples of usage.
 
 ## Reference, Citation, and Collaboration
 
