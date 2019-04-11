@@ -34,9 +34,9 @@ Numerous databases exist to catalogue the interactions that comprise
 known signaling pathways; however, manual curation of signaling
 pathways is time consuming and painstaking. A natural question arises:
 given the interactome and the interactions annotated to a given
-curated pathway, can we computationally identify candidate proteins
-from the interactome that might be considered for inclusion in the
-pathway?
+curated pathway, can we computationally identify candidate proteins and 
+interactions from the interactome that might be considered for inclusion
+in the pathway?
 
 ### Automated Signaling Pathway Curation
 
